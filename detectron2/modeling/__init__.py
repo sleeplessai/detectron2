@@ -22,6 +22,8 @@ from .meta_arch import (
     SemanticSegmentor,
     build_model,
     build_sem_seg_head,
+    OneStageDetector,
+    OneStageRCNN
 )
 from .postprocessing import detector_postprocess
 from .proposal_generator import (
@@ -45,6 +47,7 @@ from .roi_heads import (
     build_roi_heads,
 )
 from .test_time_augmentation import DatasetMapperTTA, GeneralizedRCNNWithTTA
+from .fcos import FCOS
 
 _EXCLUDE = {"ShapeSpec"}
 __all__ = [k for k in globals().keys() if k not in _EXCLUDE and not k.startswith("_")]

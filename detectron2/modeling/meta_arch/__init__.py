@@ -10,5 +10,6 @@ from .rcnn import GeneralizedRCNN, ProposalNetwork
 from .retinanet import RetinaNet
 from .semantic_seg import SEM_SEG_HEADS_REGISTRY, SemanticSegmentor, build_sem_seg_head
 
+from .one_stage_detector import OneStageDetector, OneStageRCNN
 
 __all__ = list(globals().keys())
