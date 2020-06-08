@@ -10,11 +10,11 @@ from fvcore.nn import sigmoid_focal_loss_jit
 
 from detectron2.utils.comm import reduce_sum
 from .misc import IOULoss, ml_nms
+import math
 
 
 logger = logging.getLogger(__name__)
 
-INF = 100000000
 
 """
 Shape shorthand in this module:
@@ -77,7 +77,7 @@ class FCOSOutputs(nn.Module):
         for s in cfg.MODEL.FCOS.SIZES_OF_INTEREST:
             soi.append([prev_size, s])
             prev_size = s
-        soi.append([prev_size, INF])
+        soi.append([prev_size, math.inf])
         self.sizes_of_interest = soi
 
     def _transpose(self, training_targets, num_loc_list):
@@ -201,8 +201,8 @@ class FCOSOutputs(nn.Module):
                 (max_reg_targets_per_im <= size_ranges[:, [1]])
 
             locations_to_gt_area = area[None].repeat(len(locations), 1)
-            locations_to_gt_area[is_in_boxes == 0] = INF
-            locations_to_gt_area[is_cared_in_the_level == 0] = INF
+            locations_to_gt_area[is_in_boxes == 0] = math.inf
+            locations_to_gt_area[is_cared_in_the_level == 0] = math.inf
 
             # if there are still more than one objects for a location,
             # we choose the one with minimal area
@@ -213,7 +213,7 @@ class FCOSOutputs(nn.Module):
             num_targets += len(targets_per_im)
 
             labels_per_im = labels_per_im[locations_to_gt_inds]
-            labels_per_im[locations_to_min_area == INF] = self.num_classes
+            labels_per_im[locations_to_min_area == math.inf] = self.num_classes
 
             labels.append(labels_per_im)
             reg_targets.append(reg_targets_per_im)

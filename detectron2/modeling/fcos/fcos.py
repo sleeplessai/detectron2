@@ -7,14 +7,11 @@ from torch.nn import functional as F
 from detectron2.layers import ShapeSpec, NaiveSyncBatchNorm
 from detectron2.modeling.proposal_generator.build import PROPOSAL_GENERATOR_REGISTRY
 
-from detectron2.layers import DeformConv
 from .fcos_outputs import FCOSOutputs
-from .misc import NaiveGroupNorm
+from .misc import NaiveGroupNorm, DFConv2d
 
 
 __all__ = ["FCOS"]
-
-INF = 100000000
 
 
 class Scale(nn.Module):
@@ -167,7 +164,7 @@ class FCOSHead(nn.Module):
             num_convs, use_deformable = head_configs[head]
             for i in range(num_convs):
                 if use_deformable and i == num_convs - 1:
-                    conv_func = DeformConv
+                    conv_func = DFConv2d
                 else:
                     conv_func = nn.Conv2d
                 tower.append(conv_func(
